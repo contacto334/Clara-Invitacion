@@ -381,7 +381,6 @@ footer .credit a{color:inherit;text-decoration:none}
     <div class="sicon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M19 5h10l-2 9 9 14-5 15H17l-5-15 9-14-2-9Z"/><path d="M21 14h6"/></svg></div>
     <p class="eyebrow">Código de vestimenta</p>
     <p class="lead serif" style="font-size:2rem;margin-top:10px" id="dressCode">Elegante</p>
-    <p class="sub" id="dressNote">Te pido reservar el color blanco para la cumpleañera.</p>
     <div class="swatches" aria-hidden="true">
       <span class="swatch" style="background:#8E9A7C"></span>
       <span class="swatch" style="background:#B9944A"></span>
@@ -506,9 +505,9 @@ const CONFIG = {
 
   // Fecha y hora del evento (AÑO, MES-1, DÍA, HORA, MIN)
   // OJO: el mes va de 0 a 11 → octubre = 9
-  fecha: new Date(2026, 9, 31, 21, 30, 0),
-  horaTexto: "21:30 hs",
-  horaFinTexto: "05:30 hs",
+  fecha: new Date(2026, 9, 31, 21, 0, 0),
+  horaTexto: "21:00 hs",
+  horaFinTexto: "05:00 hs",
   duracionHoras: 8,                      // para "Agendar en el calendario"
 
   salon: "Sitio Buenos Aires",
@@ -516,7 +515,6 @@ const CONFIG = {
   mapsUrl: "https://www.google.com/maps/search/?api=1&query=Av.+Dorrego+2141+C1004+CABA",
 
   dressCode: "Elegante",
-  dressNota: "Te pido reservar el color blanco para la cumpleañera.",
 
   // Fotos a pantalla completa entre secciones (5 lugares, en orden):
   //  1) después de la portada   2) después de la cuenta regresiva
@@ -575,7 +573,6 @@ $("timeRange").textContent = CONFIG.horaTexto+(CONFIG.horaFinTexto?" a "+CONFIG.
 $("mapBtn").href = CONFIG.mapsUrl;
 $("credit").href = CONFIG.creditoUrl;
 $("dressCode").textContent = CONFIG.dressCode;
-$("dressNote").textContent = CONFIG.dressNota;
 $("rMsg").previousElementSibling.textContent = "Mensaje para "+CONFIG.nombre+" (opcional)";
 const dl=CONFIG.confirmarAntesDe;
 $("deadline").textContent = "Antes del "+dl.getDate()+" de "+MESES[dl.getMonth()];
