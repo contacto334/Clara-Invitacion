@@ -536,16 +536,17 @@ const CONFIG = {
 
   // Regalos
   regalo: {
-    titular: "Nombre del titular",
-    banco: "Banco",
-    alias: "quince.clara",
-    cbu: "0000000000000000000000",
+    titular: "Clara Koenig",
+    banco: "Mercado Pago",
+    alias: "clara.konig.mp",
+    cbu: "0000003100037685227527",
+    link: "https://mpago.la/1ybVofk",
   },
 
   // Playlist de Spotify: pegá el link de la playlist (dejá "" para ocultarla)
   spotifyPlaylist: "",
 
-  whatsapp: "5491134041468",           // 1134041468 en formato internacional
+  whatsapp: "5491168065671",           // 1168065671 en formato internacional
   confirmarAntesDe: new Date(2026, 9, 15),
 
   musica: false,                        // true + descomentar <source> para música de fondo
@@ -707,7 +708,8 @@ const COPY_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
 $("giftHolder").textContent="A nombre de "+CONFIG.regalo.titular+(CONFIG.regalo.banco?" · "+CONFIG.regalo.banco:"");
 $("bank").innerHTML=[["Alias",CONFIG.regalo.alias],["CBU / CVU",CONFIG.regalo.cbu]].filter(r=>r[1]).map(r=>
   '<div class="bank-row"><span class="k">'+r[0]+'</span><div class="bank-val"><span>'+r[1]+'</span><button class="copy" type="button" data-copy="'+r[1]+'" aria-label="Copiar '+r[0]+'">'+COPY_ICON+'</button></div></div>'
-).join("")+'<button class="btn solid block" type="button" data-copy="'+CONFIG.regalo.alias+'">Copiar alias</button>';
+).join("")+'<button class="btn solid block" type="button" data-copy="'+CONFIG.regalo.alias+'">Copiar alias</button>'
+  +(CONFIG.regalo.link?'<a class="btn block" href="'+CONFIG.regalo.link+'" target="_blank" rel="noopener noreferrer">Transferir con Mercado Pago</a>':'');
 async function copyText(txt){
   try{ await navigator.clipboard.writeText(txt); }
   catch(_){
