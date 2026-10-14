@@ -522,12 +522,13 @@ const CONFIG = {
   //  1) después de la portada   2) después de la cuenta regresiva
   //  3) después de hora y lugar 4) después de regalos   5) antes de confirmar
   // Poné null en un lugar para ocultar esa foto. "texto" es opcional.
+  // "pos" = qué parte de la foto se ve en el celular ("horizontal vertical").
   paginasFoto: [
-    { src: "assets/foto-1.png", alt: "Clara", texto: "" },
-    { src: "assets/foto-2.png", alt: "Clara", texto: "" },
-    { src: "assets/foto-1.png", alt: "Clara", texto: "" },
-    { src: "assets/foto-2.png", alt: "Clara", texto: "" },
-    { src: "assets/foto-1.png", alt: "Clara", texto: "nos vemos" },
+    { src: "assets/clara-bosque.jpg",   alt: "Clara de blanco en el bosque",            pos: "44% center", texto: "" },
+    { src: "assets/clara-sombrero.jpg", alt: "Clara sonriendo con sombrero de paja",    pos: "70% center", texto: "" },
+    null,
+    null,
+    { src: "assets/clara-muelle.jpg",   alt: "Clara sonriendo en el muelle del lago",   pos: "62% center", texto: "nos vemos" },
   ],
 
   // Galería polaroid extra "Mis recuerdos" (dejá [] para ocultarla)
@@ -602,6 +603,7 @@ document.querySelectorAll(".photo-page").forEach(fig=>{
   fig.style.setProperty("--fade-bot",bg(fig.nextElementSibling));
   const img=new Image();
   img.src=p.src;img.alt=p.alt||"";img.loading="lazy";img.decoding="async";
+  if(p.pos)img.style.objectPosition=p.pos;
   fig.appendChild(img);
   if(p.texto){const c=document.createElement("figcaption");c.textContent=p.texto;fig.appendChild(c);}
   fig.classList.add("reveal-photo");
