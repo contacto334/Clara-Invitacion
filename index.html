@@ -169,6 +169,15 @@ p.sub{color:var(--ink);font-size:.98rem;max-width:32ch;margin:14px auto 0;text-w
 .polaroid:nth-child(even){transform:rotate(5deg) translateX(16%);margin-top:-48px}
 .polaroid .tape{position:absolute;top:-10px;left:50%;width:84px;height:22px;transform:translateX(-50%) rotate(-3deg);background:rgba(185,148,74,.28);backdrop-filter:blur(1px)}
 
+/* ---------- Páginas de foto (pantalla completa) ---------- */
+.photo-page{position:relative;z-index:1;margin:0;height:92svh;min-height:520px;max-height:900px;overflow:hidden;background:var(--paper-2)}
+.photo-page img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform 2.4s cubic-bezier(.2,.7,.2,1)}
+.photo-page.in img{transform:scale(1)}
+.photo-page:before,.photo-page:after{content:"";position:absolute;left:0;right:0;height:22%;z-index:1;pointer-events:none}
+.photo-page:before{top:0;background:linear-gradient(var(--fade-top,var(--paper)),transparent)}
+.photo-page:after{bottom:0;background:linear-gradient(transparent,var(--fade-bot,var(--paper)))}
+.photo-page figcaption{position:absolute;left:0;right:0;bottom:9%;z-index:2;font-family:"Alex Brush",cursive;font-size:clamp(2.4rem,11vw,3.4rem);line-height:1;color:var(--paper);text-shadow:0 2px 18px rgba(60,55,35,.45);text-align:center;padding:0 24px}
+
 /* ---------- Tarjeta info ---------- */
 .card{border:1px solid var(--line);border-radius:2px;padding:30px 24px;max-width:360px;margin:0 auto;background:rgba(255,255,255,.4)}
 .card h3{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:1.6rem;margin:0 0 6px;color:var(--sage-deep)}
@@ -313,6 +322,9 @@ footer .credit a{color:inherit;text-decoration:none}
     <div class="bot right" aria-hidden="true"></div>
   </section>
 
+  <!-- ============ FOTO 1 ============ -->
+  <figure class="photo-page" data-foto="0"></figure>
+
   <!-- ============ COUNTDOWN ============ -->
   <section class="reveal tinted">
     <p class="eyebrow">Falta poco</p>
@@ -330,6 +342,9 @@ footer .credit a{color:inherit;text-decoration:none}
       Agendar en el calendario
     </a>
   </section>
+
+  <!-- ============ FOTO 2 ============ -->
+  <figure class="photo-page" data-foto="1"></figure>
 
   <!-- ============ GALERÍA ============ -->
   <section class="reveal" id="gallerySection">
@@ -358,6 +373,9 @@ footer .credit a{color:inherit;text-decoration:none}
     </div>
   </section>
 
+  <!-- ============ FOTO 3 ============ -->
+  <figure class="photo-page" data-foto="2"></figure>
+
   <!-- ============ DRESS CODE ============ -->
   <section class="reveal tinted">
     <div class="sicon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M19 5h10l-2 9 9 14-5 15H17l-5-15 9-14-2-9Z"/><path d="M21 14h6"/></svg></div>
@@ -380,6 +398,9 @@ footer .credit a{color:inherit;text-decoration:none}
     <button class="btn" type="button" data-open="giftDialog">Ver datos de la cuenta</button>
   </section>
 
+  <!-- ============ FOTO 4 ============ -->
+  <figure class="photo-page" data-foto="3"></figure>
+
   <!-- ============ MÚSICA ============ -->
   <section class="reveal tinted" id="musicSection">
     <div class="sicon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M18 36V10l20-4v26"/><circle cx="13" cy="36" r="5"/><circle cx="33" cy="32" r="5"/></svg></div>
@@ -388,6 +409,9 @@ footer .credit a{color:inherit;text-decoration:none}
     <div class="spotify" id="spotifyWrap" hidden></div>
     <button class="btn" type="button" data-open="songDialog">Sugerir una canción</button>
   </section>
+
+  <!-- ============ FOTO 5 ============ -->
+  <figure class="photo-page" data-foto="4"></figure>
 
   <!-- ============ RSVP ============ -->
   <section class="reveal" id="rsvp">
@@ -494,11 +518,20 @@ const CONFIG = {
   dressCode: "Elegante",
   dressNota: "Te pido reservar el color blanco para la cumpleañera.",
 
-  // Fotos para la galería (dejá [] para ocultar la sección)
-  fotos: [
-    { src: "assets/foto-1.png", alt: "Vestido color salvia junto a la ventana", texto: "mi vestido" },
-    { src: "assets/foto-2.png", alt: "Mesa decorada con eucaliptos y velas", texto: "la noche" },
+  // Fotos a pantalla completa entre secciones (5 lugares, en orden):
+  //  1) después de la portada   2) después de la cuenta regresiva
+  //  3) después de hora y lugar 4) después de regalos   5) antes de confirmar
+  // Poné null en un lugar para ocultar esa foto. "texto" es opcional.
+  paginasFoto: [
+    { src: "assets/foto-1.png", alt: "Clara", texto: "" },
+    { src: "assets/foto-2.png", alt: "Clara", texto: "" },
+    { src: "assets/foto-1.png", alt: "Clara", texto: "" },
+    { src: "assets/foto-2.png", alt: "Clara", texto: "" },
+    { src: "assets/foto-1.png", alt: "Clara", texto: "nos vemos" },
   ],
+
+  // Galería polaroid extra "Mis recuerdos" (dejá [] para ocultarla)
+  fotos: [],
 
   // Regalos
   regalo: {
@@ -559,6 +592,20 @@ $("deadline").textContent = "Antes del "+dl.getDate()+" de "+MESES[dl.getMonth()
   });
   $("calBtn").href="https://calendar.google.com/calendar/render?"+params.toString();
 })();
+
+/* ---------- Páginas de foto ---------- */
+document.querySelectorAll(".photo-page").forEach(fig=>{
+  const p=CONFIG.paginasFoto[+fig.dataset.foto];
+  if(!p||!p.src){fig.hidden=true;return;}
+  const bg=el=>el&&el.classList.contains("tinted")?"var(--paper-2)":"var(--paper)";
+  fig.style.setProperty("--fade-top",bg(fig.previousElementSibling));
+  fig.style.setProperty("--fade-bot",bg(fig.nextElementSibling));
+  const img=new Image();
+  img.src=p.src;img.alt=p.alt||"";img.loading="lazy";img.decoding="async";
+  fig.appendChild(img);
+  if(p.texto){const c=document.createElement("figcaption");c.textContent=p.texto;fig.appendChild(c);}
+  fig.classList.add("reveal-photo");
+});
 
 /* ---------- Galería ---------- */
 if(CONFIG.fotos.length){
@@ -637,7 +684,7 @@ const io=new IntersectionObserver(function(entries){
     if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
   });
 },{threshold:.15});
-document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+document.querySelectorAll(".reveal,.reveal-photo").forEach(el=>io.observe(el));
 
 /* ---------- Toast ---------- */
 let toastT;
